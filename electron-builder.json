@@ -1,0 +1,17 @@
+{
+    "appId": "com.yhk.myapp",
+    "productName": "Electron Printer Bridge",
+    "directories": {
+      "output": "dist"
+    },
+    "mac": {
+      "category": "casp.hs-cargo.printer.bridge"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  }
+  

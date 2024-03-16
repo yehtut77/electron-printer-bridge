@@ -1,0 +1,22 @@
+{
+  "name": "electron-printer-bridge",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron . main.js",
+    "build": "electron-builder"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "escpos": "^3.0.0-alpha.6",
+    "express": "^4.18.3",
+    "usb": "^2.12.1"
+  },
+  "devDependencies": {
+    "electron": "^29.1.4",
+    "electron-builder": "^24.13.3"
+  }
+}
