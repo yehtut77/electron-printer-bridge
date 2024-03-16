@@ -1,6 +1,6 @@
 const usb = require('usb');
 
-function listUSBDevices() {
+async function listUSBDevices() {
     const devices = usb.getDeviceList();
     return devices.map(device => {
         return {
