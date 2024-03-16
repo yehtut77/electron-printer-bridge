@@ -1,14 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
     window.electronAPI.listUSBDevices()
         .then(devices => {
-            // Filter printers based on your criteria
-            const printers = devices.filter(device => {
-                // Replace with your printer's VID and PID
-                return device.vendorId === YOUR_PRINTER_VENDOR_ID && device.productId === YOUR_PRINTER_PRODUCT_ID;
-            });
-
-            // Display printers to the user for selection
             const printerList = document.getElementById('printerList');
+            
+            // Check if any printers are found
+            const printers = devices.filter(device => device.deviceType === 'printer');
+            if (printers.length === 0) {
+                const option = document.createElement('option');
+                option.text = 'No printers available';
+                printerList.appendChild(option);
+              
+                return;
+            }
+            
+            // Populate printer list
             printers.forEach(printer => {
                 const option = document.createElement('option');
                 option.value = printer.deviceId;
@@ -18,20 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(err => console.error("Failed to get printers:", err));
 
-    document.getElementById('print').addEventListener('click', () => {
-        const selectedPrinterId = document.getElementById('printerList').value;
-
-        if (!selectedPrinterId) {
-            console.error("No printer selected");
-            return;
-        }
-
-        // Fetch the receipt data (replace with your receipt data)
-        const receiptData = generateReceiptData();
-
-        // Send print request to the main process
-        window.ipcRenderer.send('print-receipt', { printerId: selectedPrinterId, data: receiptData });
-    });
+    
 });
 
 function generateReceiptData() {

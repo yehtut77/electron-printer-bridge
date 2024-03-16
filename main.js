@@ -3,22 +3,34 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { listUSBDevices } = require('./printService');
 const escpos = require('escpos');
+const path = require('path');
 
 let mainWindow;
 let devices; // Define the devices variable to hold the list of USB devices
+ipcMain.handle('list-usb-devices', async (event) => {
+    try {
+        const devices = await listUSBDevices();
+        return devices;
+    } catch (error) {
+        console.error('Error listing USB devices:', error);
+        throw error; // Re-throw the error to be caught in renderer process
+    }
+});
 
 function createWindow() {
     mainWindow = new BrowserWindow({
         width: 600,
         height: 400,
         webPreferences: {
-            nodeIntegration: true,
-            contextIsolation: false
+            nodeIntegration: false, // It's recommended to keep nodeIntegration disabled for security
+            contextIsolation: true, // Keep contextIsolation enabled to use contextBridge
+            preload: path.join(__dirname, 'preload.js') // Correct path to your preload script
         }
     });
 
     mainWindow.loadFile('index.html');
 }
+
 
 app.whenReady().then(async () => { // Use async/await to wait for listUSBDevices to complete
     createWindow();
